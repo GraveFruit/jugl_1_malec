@@ -2,6 +2,7 @@ package org.yourorghere;
 
 import com.sun.opengl.util.Animator;
 import java.awt.Frame;
+import java.awt.event.KeyListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import javax.media.opengl.GL;
@@ -18,6 +19,9 @@ import javax.media.opengl.glu.GLU;
  * This version is equal to Brian Paul's version 1.2 1999/10/21
  */
 public class SimpleJOGL implements GLEventListener {
+
+    //statyczne pola okreœlaj¹ce rotacjê wokó³ osi X i Y
+    private static float xrot = 0.0f, yrot = 0.0f;
 
     public static void main(String[] args) {
         Frame frame = new Frame("Simple JOGL Application");
@@ -41,6 +45,29 @@ public class SimpleJOGL implements GLEventListener {
                         System.exit(0);
                     }
                 }).start();
+            }
+        });
+        //Obs³uga klawiszy strza³ek
+        frame.addKeyListener(new KeyListener() {
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_UP) {
+                    xrot -= 1.0f;
+                }
+                if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+                    xrot += 1.0f;
+                }
+                if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+                    yrot += 1.0f;
+                }
+                if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+                    yrot -= 1.0f;
+                }
+            }
+
+            public void keyReleased(KeyEvent e) {
+            }
+
+            public void keyTyped(KeyEvent e) {
             }
         });
         // Center frame
@@ -83,11 +110,15 @@ public class SimpleJOGL implements GLEventListener {
 
     public void display(GLAutoDrawable drawable) {
         GL gl = drawable.getGL();
-        
+
         gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
         gl.glLoadIdentity();
+        gl.glTranslatef(0.0f, 0.0f, -6.0f); //przesuniêcie o 6 jednostek
+        gl.glRotatef(xrot, 1.0f, 0.0f, 0.0f); //rotacja wokó³ osi X
+        gl.glRotatef(yrot, 0.0f, 1.0f, 0.0f); //rotacja wokó³ osi Y
+
         gl.glFlush();
-        
+
 //        gl.glBegin(GL.GL_TRIANGLES);
 //            gl.glColor3f(0.28f, 0.19f, 0.11f);
 //            gl.glVertex3f(1.2f, 0.0f, -6.0f);
@@ -112,7 +143,7 @@ public class SimpleJOGL implements GLEventListener {
 //        gl.glEnd();
 //        
 //        gl.glFlush();
-//        float x, y, kat;
+        float x, y, kat;
 //        gl.glBegin(GL.GL_TRIANGLE_FAN);
 //        gl.glColor3f(1.0f, 1.0f, 0.2f);
 //            gl.glVertex3f(2.0f, 2.0f, -6.0f); //œrodek
@@ -122,18 +153,28 @@ public class SimpleJOGL implements GLEventListener {
 //            gl.glVertex3f(x+2.0f, y+1.5f, -6.0f); //kolejne punkty
 //        }
 //        gl.glEnd();
-        for(float x=-10.0f;x<10.0f; x+=0.1f)
-        {
+//        for(x=-10.0f;x<10.0f; x+=0.1f)
+//        {
+//            gl.glBegin(GL.GL_QUADS);
+//            double iks=(double)x;
+//            gl.glColor3f(0.2f, 0.2f, 0.8f);
+//            gl.glVertex3f(x, (float)Math.sin(iks)-0.5f, -6.0f);
+//            gl.glVertex3f(x+0.1f, (float)Math.sin(iks+0.1)-0.5f, -6.0f);
+//            gl.glVertex3f(x+0.1f, -4.0f, -6.0f);
+//            gl.glVertex3f(x, -4.0f, -6.0f);
+//            gl.glEnd();
+//        }
+
+        for (x = -10.0f; x < 10.0f; x += 0.1f) {
             gl.glBegin(GL.GL_QUADS);
-            double iks=(double)x;
-            gl.glVertex3f(x, (float)Math.sin(iks), -6.0f);
-            gl.glVertex3f(x+0.1f, (float)Math.sin(iks+0.1), -6.0f);
-            gl.glVertex3f(x+0.1f, -2.0f, -6.0f);
-            gl.glVertex3f(x, -2.0f, -6.0f);
+            double iks = (double) x;
+            gl.glColor3f(0.2f, 0.2f, 0.8f);
+            gl.glVertex3f(x, (float) Math.sin(iks), (float) Math.cos(iks) - 6.0f);
+            gl.glVertex3f(x + 0.1f, (float) Math.sin(iks + 0.1), (float) Math.cos(iks + 0.1) - 6.0f);
+            gl.glVertex3f(x + 0.1f, 0.0f, -6.0f);
+            gl.glVertex3f(x, 0.0f, -6.0f);
             gl.glEnd();
         }
-        
-                
 
     }
 
