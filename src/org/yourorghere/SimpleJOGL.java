@@ -87,15 +87,17 @@ public class SimpleJOGL implements GLEventListener {
         gl.glLoadIdentity();
         gl.glFlush();
         gl.glBegin(GL.GL_TRIANGLES);
-            gl.glVertex3f(-1.0f, 1.0f, -6.0f);
-            gl.glVertex3f(-2.0f, -1.0f, -6.0f);
-            gl.glVertex3f(0.0f, -1.0f, -6.0f);
+            gl.glColor3f(0.28f, 0.19f, 0.11f);
+            gl.glVertex3f(1.0f, 0.0f, -6.0f);
+            gl.glVertex3f(-1.0f, 0.0f, -6.0f);
+            gl.glVertex3f(0.0f, 0.5f, -6.0f);
         gl.glEnd();
         gl.glBegin(GL.GL_QUADS);
-            gl.glVertex3f(2.0f, 1.0f, -6.0f);
-            gl.glVertex3f(2.0f, -1.0f, -6.0f);
+            gl.glColor3f(0.6f, 0.6f, 0.6f);
+            gl.glVertex3f(-1.0f, 0.0f, -6.0f);
+            gl.glVertex3f(1.0f, 0.0f, -6.0f);
             gl.glVertex3f(1.0f, -1.0f, -6.0f);
-            gl.glVertex3f(1.0f, 1.0f, -6.0f);
+            gl.glVertex3f(-1.0f, -1.0f, -6.0f);
         gl.glEnd();
 
     }
