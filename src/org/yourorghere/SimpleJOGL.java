@@ -83,21 +83,44 @@ public class SimpleJOGL implements GLEventListener {
 
     public void display(GLAutoDrawable drawable) {
         GL gl = drawable.getGL();
+        
         gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
         gl.glLoadIdentity();
         gl.glFlush();
+        
         gl.glBegin(GL.GL_TRIANGLES);
             gl.glColor3f(0.28f, 0.19f, 0.11f);
-            gl.glVertex3f(1.0f, 0.0f, -6.0f);
-            gl.glVertex3f(-1.0f, 0.0f, -6.0f);
+            gl.glVertex3f(1.2f, 0.0f, -6.0f);
+            gl.glVertex3f(-1.2f, 0.0f, -6.0f);
             gl.glVertex3f(0.0f, 0.5f, -6.0f);
         gl.glEnd();
+        gl.glFlush();
         gl.glBegin(GL.GL_QUADS);
             gl.glColor3f(0.6f, 0.6f, 0.6f);
             gl.glVertex3f(-1.0f, 0.0f, -6.0f);
             gl.glVertex3f(1.0f, 0.0f, -6.0f);
             gl.glVertex3f(1.0f, -1.0f, -6.0f);
             gl.glVertex3f(-1.0f, -1.0f, -6.0f);
+        gl.glEnd();
+        gl.glFlush();
+        gl.glBegin(GL.GL_QUADS);
+            gl.glColor3f(0.1f, 0.7f, 0.1f);
+            gl.glVertex3f(10.0f, -1.0f, -6.0f);
+            gl.glVertex3f(10.0f, -11.0f, -6.0f);
+            gl.glVertex3f(-10.0f, -11.0f, -6.0f);
+            gl.glVertex3f(-10.0f, -1.0f, -6.0f);
+        gl.glEnd();
+        
+        gl.glFlush();
+        float x, y, kat;
+        gl.glBegin(GL.GL_TRIANGLE_FAN);
+        gl.glColor3f(1.0f, 1.0f, 0.2f);
+            gl.glVertex3f(2.0f, 2.0f, -6.0f); //œrodek
+            for (kat = 0.0f; kat < (2.0f * Math.PI); kat += (Math.PI / 32.0f)) {
+            x = 0.5f * (float) Math.sin(kat);
+            y = 0.5f * (float) Math.cos(kat);
+            gl.glVertex3f(x+2.0f, y+1.5f, -6.0f); //kolejne punkty
+        }
         gl.glEnd();
 
     }
