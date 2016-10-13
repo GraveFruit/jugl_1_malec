@@ -123,7 +123,28 @@ public class SimpleJOGL implements GLEventListener {
         gl.glFlush();
         float x, y, kat;
 
-        gl.glBegin(GL.GL_QUADS);
+        gl.glBegin(GL.GL_TRIANGLE_FAN);
+        gl.glColor3f(1.0f, 0.0f, 0.0f);
+        gl.glVertex3f(0.0f, 0.0f, -1.0f); //œrodek
+        for (kat = (float)(2.0f * Math.PI); kat > 0.0; kat -= (Math.PI / 32.0f)) {
+            x = 1.5f * (float) Math.sin(kat);
+            y = 1.5f * (float) Math.cos(kat);
+            gl.glVertex3f(x, y, -1.0f); //kolejne punkty
+        }
+        gl.glEnd();
+        
+        gl.glBegin(GL.GL_TRIANGLE_FAN);
+        gl.glColor3f(1.0f, 1.0f, 0.0f);
+        gl.glVertex3f(0.0f, 0.0f, 1.0f); //œrodek
+        for (kat = 0.0f; kat < (2.0f * Math.PI);
+                kat += (Math.PI / 32.0f)) {
+            x = 1.5f * (float) Math.sin(kat);
+            y = 1.5f * (float) Math.cos(kat);
+            gl.glVertex3f(x, y, -1.0f); //kolejne punkty
+        }
+        gl.glEnd();
+
+//        gl.glBegin(GL.GL_QUADS);
 ////œciana przednia
 //        gl.glColor3f(1.0f, 0.0f, 0.0f);
 //        gl.glVertex3f(-1.0f, -1.0f, 1.0f);
@@ -131,11 +152,11 @@ public class SimpleJOGL implements GLEventListener {
 //        gl.glVertex3f(1.0f, 1.0f, 1.0f);
 //        gl.glVertex3f(-1.0f, 1.0f, 1.0f);
 //sciana tylnia
-        gl.glColor3f(0.0f, 1.0f, 0.0f);
-        gl.glVertex3f(-1.0f, 1.0f, -1.0f);
-        gl.glVertex3f(1.0f, 1.0f, -1.0f);
-        gl.glVertex3f(1.0f, -1.0f, -1.0f);
-        gl.glVertex3f(-1.0f, -1.0f, -1.0f);
+//        gl.glColor3f(0.0f, 1.0f, 0.0f);
+//        gl.glVertex3f(-1.0f, 1.0f, -1.0f);
+//        gl.glVertex3f(1.0f, 1.0f, -1.0f);
+//        gl.glVertex3f(1.0f, -1.0f, -1.0f);
+//        gl.glVertex3f(-1.0f, -1.0f, -1.0f);
 ////œciana lewa
 //        gl.glColor3f(0.0f, 0.0f, 1.0f);
 //        gl.glVertex3f(-1.0f, -1.0f, -1.0f);
@@ -160,8 +181,29 @@ public class SimpleJOGL implements GLEventListener {
 //        gl.glVertex3f(-1.0f, 1.0f, 1.0f);
 //        gl.glVertex3f(1.0f, 1.0f, 1.0f);
 //        gl.glVertex3f(1.0f, 1.0f, -1.0f);
-        gl.glEnd();
-        gl.glBegin(GL.)
+//        gl.glEnd();
+//        gl.glBegin(GL.GL_TRIANGLES);
+//        gl.glColor3f(1.0f, 0.0f, 0.0f);
+//        gl.glVertex3f(-1.0f, 1.0f, -1.0f);
+//        gl.glVertex3f(-1.0f, -1.0f, -1.0f);
+//        gl.glVertex3f(0.0f, 0.0f, 1.0f);
+//
+//        gl.glColor3f(0.0f, 0.0f, 1.0f);
+//        gl.glVertex3f(-1.0f, -1.0f, -1.0f);
+//        gl.glVertex3f(1.0f, -1.0f, -1.0f);
+//        gl.glVertex3f(0.0f, 0.0f, 1.0f);
+//
+//        gl.glColor3f(1.0f, 1.0f, 1.0f);
+//        gl.glVertex3f(1.0f, -1.0f, -1.0f);
+//        gl.glVertex3f(1.0f, 1.0f, -1.0f);
+//
+//        gl.glVertex3f(0.0f, 0.0f, 1.0f);
+//
+//        gl.glColor3f(1.0f, 0.0f, 1.0f);
+//        gl.glVertex3f(1.0f, 1.0f, -1.0f);
+//        gl.glVertex3f(-1.0f, 1.0f, -1.0f);
+//        gl.glVertex3f(0.0f, 0.0f, 1.0f);
+//        gl.glEnd();
 //        for (x = -10.0f; x < 10.0f; x += 0.1f) {
 //            gl.glBegin(GL.GL_QUADS);
 //            double iks = (double) x;
@@ -172,7 +214,6 @@ public class SimpleJOGL implements GLEventListener {
 //            gl.glVertex3f(x, 0.0f, -6.0f);
 //            gl.glEnd();
 //        }
-
     }
 
     public void displayChanged(GLAutoDrawable drawable, boolean modeChanged, boolean deviceChanged) {
