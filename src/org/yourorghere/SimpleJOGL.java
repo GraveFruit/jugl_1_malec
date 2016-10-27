@@ -27,6 +27,7 @@ public class SimpleJOGL implements GLEventListener {
     public static float diffuseLight[] = {0.7f, 0.7f, 0.7f, 1.0f};//?wiat³o rozproszone
     public static float specular[] = {1.0f, 1.0f, 1.0f, 1.0f}; //?wiat³o odbite
     public static float lightPos[] = {0.0f, 150.0f, 150.0f, 1.0f};//pozycja ?wiat³a
+    public static float lightPos2[] = {-150.0f, -150.0f, 0.0f, 1.0f};//pozycja ?wiat³a
 
     public static void main(String[] args) {
         Frame frame = new Frame("Simple JOGL Application");
@@ -126,6 +127,13 @@ public class SimpleJOGL implements GLEventListener {
         gl.glLightfv(GL.GL_LIGHT0, GL.GL_SPECULAR, specular, 0); //?wiat³o odbite
         gl.glLightfv(GL.GL_LIGHT0, GL.GL_POSITION, lightPos, 0); //pozycja ?wiat³a
         gl.glEnable(GL.GL_LIGHT0); //uaktywnienie ?ród³a ?wiat³a nr. 0
+        
+        gl.glLightfv(GL.GL_LIGHT1, GL.GL_AMBIENT, ambientLight, 0); //swiat³o otaczajšce
+        gl.glLightfv(GL.GL_LIGHT1, GL.GL_DIFFUSE, diffuseLight, 0); //?wiat³o rozproszone
+        gl.glLightfv(GL.GL_LIGHT1, GL.GL_SPECULAR, specular, 0); //?wiat³o odbite
+        gl.glLightfv(GL.GL_LIGHT1, GL.GL_POSITION, lightPos2, 0); //pozycja ?wiat³a
+        gl.glEnable(GL.GL_LIGHT1); //uaktywnienie ?ród³a ?wiat³a nr. 0
+        
         gl.glEnable(GL.GL_COLOR_MATERIAL); //uaktywnienie ?ledzenia kolorów
         //kolory bêdš ustalane za pomocš glColor
         gl.glColorMaterial(GL.GL_FRONT, GL.GL_AMBIENT_AND_DIFFUSE);
@@ -166,6 +174,11 @@ public class SimpleJOGL implements GLEventListener {
         gl.glLightfv(GL.GL_LIGHT0,GL.GL_DIFFUSE,diffuseLight,0);
         gl.glLightfv(GL.GL_LIGHT0,GL.GL_SPECULAR,specular,0);
         gl.glLightfv(GL.GL_LIGHT0,GL.GL_POSITION,lightPos,0);
+        
+        gl.glLightfv(GL.GL_LIGHT1,GL.GL_AMBIENT,ambientLight,0);
+        gl.glLightfv(GL.GL_LIGHT1,GL.GL_DIFFUSE,diffuseLight,0);
+        gl.glLightfv(GL.GL_LIGHT1,GL.GL_SPECULAR,specular,0);
+        gl.glLightfv(GL.GL_LIGHT1,GL.GL_POSITION,lightPos2,0);
 
         gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
         gl.glLoadIdentity();
@@ -176,85 +189,98 @@ public class SimpleJOGL implements GLEventListener {
         gl.glFlush();
         float x, y, kat;
 
-//        gl.glBegin(GL.GL_TRIANGLE_FAN);
-//        gl.glColor3f(1.0f, 0.0f, 0.0f);
-//        gl.glVertex3f(0.0f, 0.0f, -1.0f); //œrodek
-//        //for (kat = (float) (2.0f * Math.PI); kat > 0.0; kat -= (Math.PI / 32.0f)) {
-//        for (kat = 0.0f; kat < (2.0f * Math.PI); kat += (Math.PI / 32.0f)) {
-//            x = 1.5f * (float) Math.sin(kat);
-//            y = 1.5f * (float) Math.cos(kat);
-//            gl.glVertex3f(x, y, -1.0f); //kolejne punkty
-//        }
-//        gl.glEnd();
-//
-//        gl.glBegin(GL.GL_TRIANGLE_FAN);
-//        gl.glColor3f(0.5f, 1.0f, 0.0f);
-//        gl.glVertex3f(0.0f, 0.0f, 1.0f); //œrodek
-//        for (kat = (float) (2.0f * Math.PI); kat > 0.0; kat -= (Math.PI / 32.0f)) {
-//            //for (kat = 0.0f; kat < (2.0f * Math.PI); kat += (Math.PI / 32.0f)) {
-//            x = 1.5f * (float) Math.sin(kat);
-//            y = 1.5f * (float) Math.cos(kat);
-//            gl.glVertex3f(x, y, 1.0f); //kolejne punkty
-//        }
-//        gl.glEnd();
-//
-//        gl.glBegin(GL.GL_QUAD_STRIP);
-//        gl.glColor3f(1.0f, 1.0f, 0.0f);
-//
-//        //œrodek
-//        //for (kat = 0.0f; kat < (2.0f * Math.PI); kat += (Math.PI / 32.0f)) {
-//        for (kat = 0.0f; kat < (2.0f * Math.PI); kat += (Math.PI / 32.0f)) {
-//            x = 1.5f * (float) Math.sin(kat);
-//            y = 1.5f * (float) Math.cos(kat);
-//            gl.glVertex3f(x, y, -1.0f);
-//            gl.glVertex3f(x, y, 1.0f);//kolejne punkty
-//        }
-//        gl.glEnd();
-
-        gl.glBegin(GL.GL_QUADS);
-//œciana przednia
-        gl.glColor3f(0.8f, 0.0f, 0.0f);
-        gl.glNormal3f(0.0f,0.0f,1.0f);
-        gl.glVertex3f(-1.0f, -1.0f, 1.0f);
-        gl.glVertex3f(1.0f, -1.0f, 1.0f);
-        gl.glVertex3f(1.0f, 1.0f, 1.0f);
-        gl.glVertex3f(-1.0f, 1.0f, 1.0f);
-//sciana tylniaa
-        gl.glColor3f(0.8f, 0.0f, 0.0f);
+        gl.glBegin(GL.GL_TRIANGLE_FAN);
+        gl.glColor3f(1.0f, 0.0f, 0.0f);
+        gl.glVertex3f(0.0f, 0.0f, -1.0f); //œrodek
         gl.glNormal3f(0.0f,0.0f,-1.0f);
-        gl.glVertex3f(-1.0f, 1.0f, -1.0f);
-        gl.glVertex3f(1.0f, 1.0f, -1.0f);
-        gl.glVertex3f(1.0f, -1.0f, -1.0f);
-        gl.glVertex3f(-1.0f, -1.0f, -1.0f);
-//œciana lewa
-        gl.glColor3f(0.8f, 0.0f, 0.0f);
-        gl.glNormal3f(-1.0f,0.0f,0.0f);
-        gl.glVertex3f(-1.0f, -1.0f, -1.0f);
-        gl.glVertex3f(-1.0f, -1.0f, 1.0f);
-        gl.glVertex3f(-1.0f, 1.0f, 1.0f);
-        gl.glVertex3f(-1.0f, 1.0f, -1.0f);
-//œciana prawa
-        gl.glColor3f(0.8f, 0.0f, 0.0f);
-        gl.glNormal3f(1.0f,0.0f,0.0f);
-        gl.glVertex3f(1.0f, 1.0f, -1.0f);
-        gl.glVertex3f(1.0f, 1.0f, 1.0f);
-        gl.glVertex3f(1.0f, -1.0f, 1.0f);
-        gl.glVertex3f(1.0f, -1.0f, -1.0f);
-//œciana dolna
-        gl.glColor3f(0.8f, 0.0f, 0.0f);
-        gl.glNormal3f(0.0f,-1.0f,0.0f);
-        gl.glVertex3f(-1.0f, -1.0f, 1.0f);
-        gl.glVertex3f(-1.0f, -1.0f, -1.0f);
-        gl.glVertex3f(1.0f, -1.0f, -1.0f);
-        gl.glVertex3f(1.0f, -1.0f, 1.0f);
-//sciana gorna
-        gl.glColor3f(0.8f, 0.0f, 0.0f);
-        gl.glNormal3f(0.0f,1.0f,0.0f);
-        gl.glVertex3f(-1.0f, 1.0f, -1.0f);
-        gl.glVertex3f(-1.0f, 1.0f, 1.0f);
-        gl.glVertex3f(1.0f, 1.0f, 1.0f);
-        gl.glVertex3f(1.0f, 1.0f, -1.0f);
+        //for (kat = (float) (2.0f * Math.PI); kat > 0.0; kat -= (Math.PI / 32.0f)) {
+        for (kat = 0.0f; kat < (2.0f * Math.PI); kat += (Math.PI / 32.0f)) {
+            x = 1.5f * (float) Math.sin(kat);
+            y = 1.5f * (float) Math.cos(kat);
+            gl.glVertex3f(x, y, -1.0f); //kolejne punkty
+        }
         gl.glEnd();
+
+        gl.glBegin(GL.GL_TRIANGLE_FAN);
+        gl.glColor3f(0.5f, 1.0f, 0.0f);
+        gl.glVertex3f(0.0f, 0.0f, 1.0f); //œrodek
+        gl.glNormal3f(0.0f,0.0f,1.0f);
+        for (kat = (float) (2.0f * Math.PI); kat > 0.0; kat -= (Math.PI / 32.0f)) {
+            //for (kat = 0.0f; kat < (2.0f * Math.PI); kat += (Math.PI / 32.0f)) {
+            x = 1.5f * (float) Math.sin(kat);
+            y = 1.5f * (float) Math.cos(kat);
+            gl.glVertex3f(x, y, 1.0f); //kolejne punkty
+        }
+        gl.glEnd();
+
+        gl.glBegin(GL.GL_QUAD_STRIP);
+        gl.glColor3f(1.0f, 1.0f, 0.0f);
+
+        //œrodek
+        //for (kat = 0.0f; kat < (2.0f * Math.PI); kat += (Math.PI / 32.0f)) {
+        for (kat = 0.0f; kat < (3.0f * Math.PI); kat += (Math.PI / 8.0f)) {
+            x = 1.5f * (float) Math.sin(kat);
+            y = 1.5f * (float) Math.cos(kat);
+            gl.glNormal3f((float) Math.sin(kat),(float) Math.cos(kat),-1.0f);
+            gl.glVertex3f(x, y, -1.0f);
+            gl.glVertex3f(x, y, 1.0f);//kolejne punkty
+        }
+        gl.glEnd();
+        
+        gl.glBegin(GL.GL_QUADS);
+        gl.glColor3f(0.3f, 0.3f, 0.3f);
+        gl.glNormal3f(-1.0f,0.0f,0.0f);
+        gl.glVertex3f(-2.5f, 0.0f, -2.0f);
+        gl.glVertex3f(-2.5f, 0.0f, 2.0f);
+        gl.glVertex3f(-2.5f, -2.0f, 2.0f);
+        gl.glVertex3f(-2.5f, -2.0f, -2.0f);
+        
+        gl.glEnd();
+
+//        gl.glBegin(GL.GL_QUADS);
+////œciana przednia
+//        gl.glColor3f(0.8f, 0.0f, 0.0f);
+//        gl.glNormal3f(0.0f,0.0f,1.0f);
+//        gl.glVertex3f(-3.0f, -3.0f, 3.0f);
+//        gl.glVertex3f(3.0f, -3.0f, 3.0f);
+//        gl.glVertex3f(3.0f, 3.0f, 3.0f);
+//        gl.glVertex3f(-3.0f, 3.0f, 3.0f);
+////sciana tylniaa
+//        gl.glColor3f(0.8f, 0.0f, 0.0f);
+//        gl.glNormal3f(0.0f,0.0f,-1.0f);
+//        gl.glVertex3f(-3.0f, 3.0f, -3.0f);
+//        gl.glVertex3f(3.0f, 3.0f, -3.0f);
+//        gl.glVertex3f(3.0f, -3.0f, -3.0f);
+//        gl.glVertex3f(-3.0f, -3.0f, -3.0f);
+////œciana lewa
+//        gl.glColor3f(0.8f, 0.0f, 0.0f);
+//        gl.glNormal3f(-1.0f,0.0f,0.0f);
+//        gl.glVertex3f(-3.0f, -3.0f, -3.0f);
+//        gl.glVertex3f(-3.0f, -3.0f, 3.0f);
+//        gl.glVertex3f(-3.0f, 3.0f, 3.0f);
+//        gl.glVertex3f(-3.0f, 3.0f, -3.0f);
+////œciana prawa
+//        gl.glColor3f(0.8f, 0.0f, 0.0f);
+//        gl.glNormal3f(1.0f,0.0f,0.0f);
+//        gl.glVertex3f(1.0f, 1.0f, -1.0f);
+//        gl.glVertex3f(1.0f, 1.0f, 1.0f);
+//        gl.glVertex3f(1.0f, -1.0f, 1.0f);
+//        gl.glVertex3f(1.0f, -1.0f, -1.0f);
+////œciana dolna
+//        gl.glColor3f(0.8f, 0.0f, 0.0f);
+//        gl.glNormal3f(0.0f,-1.0f,0.0f);
+//        gl.glVertex3f(-1.0f, -1.0f, 1.0f);
+//        gl.glVertex3f(-1.0f, -1.0f, -1.0f);
+//        gl.glVertex3f(1.0f, -1.0f, -1.0f);
+//        gl.glVertex3f(1.0f, -1.0f, 1.0f);
+////sciana gorna
+//        gl.glColor3f(0.8f, 0.0f, 0.0f);
+//        gl.glNormal3f(0.0f,1.0f,0.0f);
+//        gl.glVertex3f(-1.0f, 1.0f, -1.0f);
+//        gl.glVertex3f(-1.0f, 1.0f, 1.0f);
+//        gl.glVertex3f(1.0f, 1.0f, 1.0f);
+//        gl.glVertex3f(1.0f, 1.0f, -1.0f);
+//        gl.glEnd();
 //        gl.glBegin(GL.GL_TRIANGLES);
 //        gl.glColor3f(1.0f, 0.0f, 0.0f);
 //        gl.glVertex3f(-1.0f, 1.0f, -1.0f);
