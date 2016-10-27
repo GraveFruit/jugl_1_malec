@@ -219,7 +219,7 @@ public class SimpleJOGL implements GLEventListener {
         gl.glVertex3f(1.0f, -1.0f, 1.0f);
         gl.glVertex3f(1.0f, 1.0f, 1.0f);
         gl.glVertex3f(-1.0f, 1.0f, 1.0f);
-//sciana tylnia
+//sciana tylniaa
         gl.glColor3f(0.8f, 0.0f, 0.0f);
         gl.glNormal3f(0.0f,0.0f,-1.0f);
         gl.glVertex3f(-1.0f, 1.0f, -1.0f);
