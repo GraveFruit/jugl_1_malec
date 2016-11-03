@@ -26,8 +26,8 @@ public class SimpleJOGL implements GLEventListener {
     public static float ambientLight[] = {0.3f, 0.3f, 0.3f, 1.0f};//swiat³o otaczajšce
     public static float diffuseLight[] = {0.7f, 0.7f, 0.7f, 1.0f};//?wiat³o rozproszone
     public static float specular[] = {1.0f, 1.0f, 1.0f, 1.0f}; //?wiat³o odbite
-    public static float lightPos[] = {0.0f, 150.0f, 150.0f, 1.0f};//pozycja ?wiat³a
-    public static float lightPos2[] = {-150.0f, -150.0f, 0.0f, 1.0f};//pozycja ?wiat³a
+    public static float lightPos[] = {-50.0f, 150.0f, 150.0f, 1.0f};//pozycja ?wiat³a
+    public static float lightPos2[] = {-150.0f, -150.0f, 50.0f, 1.0f};//pozycja ?wiat³a
 
     public static void main(String[] args) {
         Frame frame = new Frame("Simple JOGL Application");
@@ -161,9 +161,19 @@ public class SimpleJOGL implements GLEventListener {
         gl.glViewport(0, 0, width, height);
         gl.glMatrixMode(GL.GL_PROJECTION);
         gl.glLoadIdentity();
-        glu.gluPerspective(45.0f, h, 1.0, 20.0);
+        glu.gluPerspective(35.0f, h, 1.0, 20.0);
         gl.glMatrixMode(GL.GL_MODELVIEW);
         gl.glLoadIdentity();
+
+        float ilor;
+        if (width <= height) {
+            ilor = height / width;
+            gl.glOrtho(-10.0f, 10.0f, -10.0f * ilor, 10.0f * ilor, -10.0f, 10.0f);
+        } else {
+            ilor = width / height;
+            gl.glOrtho(-10.0f * ilor, 10.0f * ilor, -10.0f, 10.0f, -10.0f, 10.0f);
+        }
+
     }
 
     public void display(GLAutoDrawable drawable) {
@@ -173,6 +183,11 @@ public class SimpleJOGL implements GLEventListener {
         gl.glLightfv(GL.GL_LIGHT0, GL.GL_DIFFUSE, diffuseLight, 0);
         gl.glLightfv(GL.GL_LIGHT0, GL.GL_SPECULAR, specular, 0);
         gl.glLightfv(GL.GL_LIGHT0, GL.GL_POSITION, lightPos, 0);
+        
+        gl.glLightfv(GL.GL_LIGHT1, GL.GL_AMBIENT, ambientLight, 0);
+        gl.glLightfv(GL.GL_LIGHT1, GL.GL_DIFFUSE, diffuseLight, 0);
+        gl.glLightfv(GL.GL_LIGHT1, GL.GL_SPECULAR, specular, 0);
+        gl.glLightfv(GL.GL_LIGHT1, GL.GL_POSITION, lightPos2, 0);
 
         gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
         gl.glLoadIdentity();
@@ -185,7 +200,7 @@ public class SimpleJOGL implements GLEventListener {
         gl.glScalef(0.3f, 0.3f, 0.3f);
         gl.glTranslatef(-7.5f, -7.5f, 0.0f);
         gl.glPushMatrix();
-        
+
         for (int j = 0; j < 10; j++) {
             gl.glPushMatrix();
             for (int i = 0; i < 10; i++) {
@@ -259,7 +274,7 @@ public class SimpleJOGL implements GLEventListener {
         gl.glEnd();
         gl.glBegin(GL.GL_TRIANGLE_FAN);
         gl.glNormal3f(0.0f, 0.0f, 1.0f);
-        gl.glColor3f(0.0f, 0.3f, 0.0f);
+        gl.glColor3f(0.0f, 0.15f, 0.0f);
         gl.glVertex3f(0.0f, 0.0f, 0.0f); //srodek kola
         for (kat = 2.0f * (float) Math.PI; kat > 0.0f; kat -= (Math.PI / 32.0f)) {
             x = (float) Math.sin(kat);
