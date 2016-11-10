@@ -6,17 +6,28 @@ import javax.media.opengl.*;
 public class Koparka {
     
     public float kat1=0;
+    public float kierunek1=-1;
+    public float stan1=0;
     public float kat2=0;
+    public float kierunek2=1;
+    public float stan2=0;
     public float kat3=0;
+    public float kierunek3=1;
+    public float stan3=0;
     public float kat4=0;
+    public float kierunek4=1;
+    public float stan4=1;
     
     public void ZmienKat1(float kat1){
         this.kat1+=kat1;
-        if(this.kat1>30.0f)
-            this.kat1=30.0f;
+        if(this.kat1>30.0f){
+            this.kierunek1*=-1;
+            this.kat1=30.0f;}
         if(this.kat1<-80.0f)
             this.kat1=-80.0f;
+        
     }
+
     
     public void ZmienKat2(float kat2){
         this.kat2+=kat2;
