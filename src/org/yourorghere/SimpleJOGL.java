@@ -11,6 +11,12 @@ import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLCanvas;
 import javax.media.opengl.GLEventListener;
 import javax.media.opengl.glu.GLU;
+import com.sun.opengl.util.texture.Texture;
+import com.sun.opengl.util.texture.TextureIO;
+import java.io.File;
+import java.awt.image.BufferedImage;
+import javax.imageio.ImageIO;
+import javax.swing.JOptionPane;
 
 /**
  * SimpleJOGL.java <BR>
@@ -29,8 +35,11 @@ public class SimpleJOGL implements GLEventListener {
     public static float lightPos[] = {-50.0f, 150.0f, 150.0f, 1.0f};//pozycja ?wiat³a
     public static float lightPos2[] = {-150.0f, -150.0f, 50.0f, 1.0f};//pozycja ?wiat³a
     static Koparka koparka;
-    
+    static BufferedImage image1 = null, image2 = null;
+    static Texture t1 = null, t2 = null;
+
     public static void main(String[] args) {
+
         Frame frame = new Frame("Simple JOGL Application");
         GLCanvas canvas = new GLCanvas();
         canvas.addGLEventListener(new SimpleJOGL());
@@ -92,23 +101,6 @@ public class SimpleJOGL implements GLEventListener {
                 if (e.getKeyChar() == 'm') {
                     lightPos[3] = 1;
                 }
-                if (e.getKeyCode() == KeyEvent.VK_1)
-                    koparka.ZmienKat1(1.5f);
-                if (e.getKeyCode() == KeyEvent.VK_2)
-                    koparka.ZmienKat1(-1.5f);
-                if (e.getKeyCode() == KeyEvent.VK_3)
-                    koparka.ZmienKat2(1.5f);
-                if (e.getKeyCode() == KeyEvent.VK_4)
-                    koparka.ZmienKat2(-1.5f);
-                if (e.getKeyCode() == KeyEvent.VK_5)
-                    koparka.ZmienKat3(1.5f);
-                if (e.getKeyCode() == KeyEvent.VK_6)
-                    koparka.ZmienKat3(-1.5f);
-                if (e.getKeyCode() == KeyEvent.VK_7)
-                    koparka.ZmienKat4(1.5f);
-                if (e.getKeyCode() == KeyEvent.VK_8)
-                    koparka.ZmienKat4(-1.5f);
-
             }
 
             public void keyReleased(KeyEvent e) {
@@ -127,8 +119,8 @@ public class SimpleJOGL implements GLEventListener {
         // Use debug pipeline
         // drawable.setGL(new DebugGL(drawable.getGL()));
 
-        koparka = new Koparka();
-        
+        //koparka = new Koparka();
+
         GL gl = drawable.getGL();
         System.err.println("INIT GL IS: " + gl.getClass().getName());
 
@@ -166,6 +158,24 @@ public class SimpleJOGL implements GLEventListener {
         gl.glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
         gl.glShadeModel(GL.GL_SMOOTH); // try setting this to GL_FLAT and see what happens.
 
+        try {
+            image1 = ImageIO.read(new File("pokemon.bmp"));
+            image2 = ImageIO.read(new File("android.bmp"));
+        } catch (Exception exc) {
+            JOptionPane.showMessageDialog(null, exc.toString());
+            return;
+        }
+
+        t1 = TextureIO.newTexture(image1, false);
+        t2 = TextureIO.newTexture(image2, false);
+
+        gl.glTexEnvi(GL.GL_TEXTURE_ENV, GL.GL_TEXTURE_ENV_MODE, GL.GL_BLEND | GL.GL_MODULATE);
+        gl.glEnable(GL.GL_TEXTURE_2D);
+        gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_WRAP_S, GL.GL_REPEAT);
+        gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_WRAP_T, GL.GL_REPEAT);
+        gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MAG_FILTER, GL.GL_NEAREST);
+        gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MIN_FILTER, GL.GL_NEAREST);
+
     }
 
     public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
@@ -202,60 +212,59 @@ public class SimpleJOGL implements GLEventListener {
         gl.glLightfv(GL.GL_LIGHT0, GL.GL_DIFFUSE, diffuseLight, 0);
         gl.glLightfv(GL.GL_LIGHT0, GL.GL_SPECULAR, specular, 0);
         gl.glLightfv(GL.GL_LIGHT0, GL.GL_POSITION, lightPos, 0);
-        
-        gl.glLightfv(GL.GL_LIGHT1, GL.GL_AMBIENT, ambientLight, 0);
-        gl.glLightfv(GL.GL_LIGHT1, GL.GL_DIFFUSE, diffuseLight, 0);
-        gl.glLightfv(GL.GL_LIGHT1, GL.GL_SPECULAR, specular, 0);
-        gl.glLightfv(GL.GL_LIGHT1, GL.GL_POSITION, lightPos2, 0);
 
         gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
         gl.glLoadIdentity();
-//        gl.glTranslatef(0.0f, 0.0f, -6.0f); //przesuniêcie o 6 jednostek
-//        gl.glRotatef(xrot, 1.0f, 0.0f, 0.0f); //rotacja wokó³ osi X
-//        gl.glRotatef(yrot, 0.0f, 1.0f, 0.0f); //rotacja wokó³ osi Y
-//
-//        gl.glFlush();
-//        koparka.Rysuj(gl);
-////        gl.glRotatef(90.0f, 1.0f, 0.0f, 0.0f);
-////        gl.glScalef(0.3f, 0.3f, 0.3f);
-////        gl.glTranslatef(-7.5f, -7.5f, 0.0f);
-////        gl.glPushMatrix();
-////
-////        for (int j = 0; j < 10; j++) {
-////            gl.glPushMatrix();
-////            for (int i = 0; i < 10; i++) {
-////                drzewo(gl);
-////                gl.glTranslatef(0.0f, 1.5f, 0.0f);
-////            }
-////            gl.glPopMatrix();
-////            gl.glTranslatef(1.5f, 0.0f, 0.0f);
-////        }
-////        gl.glPopMatrix();
-////        gl.glTranslatef(-7.5f, -7.5f, 0.0f);
-//        
-//
-//        koparka.kat1+=koparka.kierunek1*koparka.stan1*0.05f;
-//        koparka.kat2+=koparka.kierunek2*koparka.stan2*0.05f;
-//        koparka.kat3+=koparka.kierunek3*koparka.stan3*0.05f;
-//        koparka.kat4+=koparka.kierunek4*koparka.stan4*0.05f;
-//        
-//        if(Math.abs(koparka.kat4)>=45.0f){
-//            koparka.stan4=0;
-//        }
-//        if(koparka.kat1>=30.0f||koparka.kat1<=80.0f){
-//            koparka.stan1=0;
-//        }
-//        if(Math.abs(koparka.kat4)>=45.0f){
-//            koparka.stan4=0;
-//        }
-//        if(Math.abs(koparka.kat4)>=45.0f){
-//            koparka.stan4=0;
-//        }
-//                
-//        if(koparka.stan4==0&&koparka.kierunek4==1){
-//            koparka.stan1=1;            
-//        }
-//        
+        gl.glTranslatef(0.0f, 0.0f, -6.0f); //przesuni?cie o 6 jednostek
+        gl.glRotatef(xrot, 1.0f, 0.0f, 0.0f); //rotacja wokó? osi X
+        gl.glRotatef(yrot, 0.0f, 1.0f, 0.0f); //rotacja wokó? osi Y
+
+        gl.glFlush();
+
+        gl.glBegin(GL.GL_QUADS);
+//?ciana przednia
+        gl.glColor3f(0.8f, 0.0f, 0.0f);
+        gl.glNormal3f(0.0f, 0.0f, 1.0f);
+        gl.glVertex3f(-1.0f, -1.0f, 1.0f);
+        gl.glVertex3f(1.0f, -1.0f, 1.0f);
+        gl.glVertex3f(1.0f, 1.0f, 1.0f);
+        gl.glVertex3f(-1.0f, 1.0f, 1.0f);
+//sciana tylniaa
+        gl.glColor3f(0.8f, 0.0f, 0.0f);
+        gl.glNormal3f(0.0f, 0.0f, -1.0f);
+        gl.glVertex3f(-1.0f, 1.0f, -1.0f);
+        gl.glVertex3f(1.0f, 1.0f, -1.0f);
+        gl.glVertex3f(1.0f, -1.0f, -1.0f);
+        gl.glVertex3f(-1.0f, -1.0f, -1.0f);
+//?ciana lewa
+        gl.glColor3f(0.8f, 0.0f, 0.0f);
+        gl.glNormal3f(-1.0f, 0.0f, 0.0f);
+        gl.glVertex3f(-1.0f, -1.0f, -1.0f);
+        gl.glVertex3f(-1.0f, -1.0f, 1.0f);
+        gl.glVertex3f(-1.0f, 1.0f, 1.0f);
+        gl.glVertex3f(-1.0f, 1.0f, -1.0f);
+//?ciana prawa
+        gl.glColor3f(0.8f, 0.0f, 0.0f);
+        gl.glNormal3f(1.0f, 0.0f, 0.0f);
+        gl.glVertex3f(1.0f, 1.0f, -1.0f);
+        gl.glVertex3f(1.0f, 1.0f, 1.0f);
+        gl.glVertex3f(1.0f, -1.0f, 1.0f);
+        gl.glVertex3f(1.0f, -1.0f, -1.0f);
+//?ciana dolna
+        gl.glColor3f(0.8f, 0.0f, 0.0f);
+        gl.glNormal3f(0.0f, -1.0f, 0.0f);
+        gl.glVertex3f(-1.0f, -1.0f, 1.0f);
+        gl.glVertex3f(-1.0f, -1.0f, -1.0f);
+        gl.glVertex3f(1.0f, -1.0f, -1.0f);
+        gl.glVertex3f(1.0f, -1.0f, 1.0f);
+//sciana gorna
+        gl.glColor3f(0.8f, 0.0f, 0.0f);
+        gl.glNormal3f(0.0f, 1.0f, 0.0f);
+        gl.glVertex3f(-1.0f, 1.0f, -1.0f);
+        gl.glVertex3f(-1.0f, 1.0f, 1.0f);
+        gl.glVertex3f(1.0f, 1.0f, 1.0f);
+        gl.glVertex3f(1.0f, 1.0f, -1.0f);
+        gl.glEnd();
 
     }
 
