@@ -28,7 +28,8 @@ public class SimpleJOGL implements GLEventListener {
     public static float specular[] = {1.0f, 1.0f, 1.0f, 1.0f}; //?wiat³o odbite
     public static float lightPos[] = {-50.0f, 150.0f, 150.0f, 1.0f};//pozycja ?wiat³a
     public static float lightPos2[] = {-150.0f, -150.0f, 50.0f, 1.0f};//pozycja ?wiat³a
-
+    static Koparka koparka;
+    
     public static void main(String[] args) {
         Frame frame = new Frame("Simple JOGL Application");
         GLCanvas canvas = new GLCanvas();
@@ -91,6 +92,22 @@ public class SimpleJOGL implements GLEventListener {
                 if (e.getKeyChar() == 'm') {
                     lightPos[3] = 1;
                 }
+                if (e.getKeyCode() == KeyEvent.VK_1)
+                    koparka.ZmienKat1(1.5f);
+                if (e.getKeyCode() == KeyEvent.VK_2)
+                    koparka.ZmienKat1(-1.5f);
+                if (e.getKeyCode() == KeyEvent.VK_3)
+                    koparka.ZmienKat2(1.5f);
+                if (e.getKeyCode() == KeyEvent.VK_4)
+                    koparka.ZmienKat2(-1.5f);
+                if (e.getKeyCode() == KeyEvent.VK_5)
+                    koparka.ZmienKat3(1.5f);
+                if (e.getKeyCode() == KeyEvent.VK_6)
+                    koparka.ZmienKat3(-1.5f);
+                if (e.getKeyCode() == KeyEvent.VK_7)
+                    koparka.ZmienKat4(1.5f);
+                if (e.getKeyCode() == KeyEvent.VK_8)
+                    koparka.ZmienKat4(-1.5f);
 
             }
 
@@ -110,6 +127,8 @@ public class SimpleJOGL implements GLEventListener {
         // Use debug pipeline
         // drawable.setGL(new DebugGL(drawable.getGL()));
 
+        koparka = new Koparka();
+        
         GL gl = drawable.getGL();
         System.err.println("INIT GL IS: " + gl.getClass().getName());
 
@@ -161,7 +180,7 @@ public class SimpleJOGL implements GLEventListener {
         gl.glViewport(0, 0, width, height);
         gl.glMatrixMode(GL.GL_PROJECTION);
         gl.glLoadIdentity();
-        glu.gluPerspective(35.0f, h, 1.0, 20.0);
+        glu.gluPerspective(100.0f, h, 0.1, 100.0);
         gl.glMatrixMode(GL.GL_MODELVIEW);
         gl.glLoadIdentity();
 
@@ -191,27 +210,52 @@ public class SimpleJOGL implements GLEventListener {
 
         gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
         gl.glLoadIdentity();
-        gl.glTranslatef(0.0f, 0.0f, -6.0f); //przesuniêcie o 6 jednostek
-        gl.glRotatef(xrot, 1.0f, 0.0f, 0.0f); //rotacja wokó³ osi X
-        gl.glRotatef(yrot, 0.0f, 1.0f, 0.0f); //rotacja wokó³ osi Y
-
-        gl.glFlush();
-        gl.glRotatef(90.0f, 1.0f, 0.0f, 0.0f);
-        gl.glScalef(0.3f, 0.3f, 0.3f);
-        gl.glTranslatef(-7.5f, -7.5f, 0.0f);
-        gl.glPushMatrix();
-
-        for (int j = 0; j < 10; j++) {
-            gl.glPushMatrix();
-            for (int i = 0; i < 10; i++) {
-                drzewo(gl);
-                gl.glTranslatef(0.0f, 1.5f, 0.0f);
-            }
-            gl.glPopMatrix();
-            gl.glTranslatef(1.5f, 0.0f, 0.0f);
-        }
-        gl.glPopMatrix();
-        gl.glTranslatef(-7.5f, -7.5f, 0.0f);
+//        gl.glTranslatef(0.0f, 0.0f, -6.0f); //przesuniêcie o 6 jednostek
+//        gl.glRotatef(xrot, 1.0f, 0.0f, 0.0f); //rotacja wokó³ osi X
+//        gl.glRotatef(yrot, 0.0f, 1.0f, 0.0f); //rotacja wokó³ osi Y
+//
+//        gl.glFlush();
+//        koparka.Rysuj(gl);
+////        gl.glRotatef(90.0f, 1.0f, 0.0f, 0.0f);
+////        gl.glScalef(0.3f, 0.3f, 0.3f);
+////        gl.glTranslatef(-7.5f, -7.5f, 0.0f);
+////        gl.glPushMatrix();
+////
+////        for (int j = 0; j < 10; j++) {
+////            gl.glPushMatrix();
+////            for (int i = 0; i < 10; i++) {
+////                drzewo(gl);
+////                gl.glTranslatef(0.0f, 1.5f, 0.0f);
+////            }
+////            gl.glPopMatrix();
+////            gl.glTranslatef(1.5f, 0.0f, 0.0f);
+////        }
+////        gl.glPopMatrix();
+////        gl.glTranslatef(-7.5f, -7.5f, 0.0f);
+//        
+//
+//        koparka.kat1+=koparka.kierunek1*koparka.stan1*0.05f;
+//        koparka.kat2+=koparka.kierunek2*koparka.stan2*0.05f;
+//        koparka.kat3+=koparka.kierunek3*koparka.stan3*0.05f;
+//        koparka.kat4+=koparka.kierunek4*koparka.stan4*0.05f;
+//        
+//        if(Math.abs(koparka.kat4)>=45.0f){
+//            koparka.stan4=0;
+//        }
+//        if(koparka.kat1>=30.0f||koparka.kat1<=80.0f){
+//            koparka.stan1=0;
+//        }
+//        if(Math.abs(koparka.kat4)>=45.0f){
+//            koparka.stan4=0;
+//        }
+//        if(Math.abs(koparka.kat4)>=45.0f){
+//            koparka.stan4=0;
+//        }
+//                
+//        if(koparka.stan4==0&&koparka.kierunek4==1){
+//            koparka.stan1=1;            
+//        }
+//        
 
     }
 
