@@ -190,7 +190,7 @@ public class SimpleJOGL implements GLEventListener {
         gl.glViewport(0, 0, width, height);
         gl.glMatrixMode(GL.GL_PROJECTION);
         gl.glLoadIdentity();
-        glu.gluPerspective(100.0f, h, 0.1, 100.0);
+        glu.gluPerspective(50.0f, h, 0.1, 100.0);
         gl.glMatrixMode(GL.GL_MODELVIEW);
         gl.glLoadIdentity();
 
@@ -221,48 +221,77 @@ public class SimpleJOGL implements GLEventListener {
 
         gl.glFlush();
 
+        gl.glBindTexture(GL.GL_TEXTURE_2D, t1.getTextureObject());
         gl.glBegin(GL.GL_QUADS);
 //?ciana przednia
-        gl.glColor3f(0.8f, 0.0f, 0.0f);
+        //gl.glColor3f(0.8f, 0.0f, 0.0f);
         gl.glNormal3f(0.0f, 0.0f, 1.0f);
+        gl.glTexCoord2f(1.0f, 1.0f); 
         gl.glVertex3f(-1.0f, -1.0f, 1.0f);
+        gl.glTexCoord2f(0.0f, 1.0f);
         gl.glVertex3f(1.0f, -1.0f, 1.0f);
+        gl.glTexCoord2f(0.0f, 0.0f);
         gl.glVertex3f(1.0f, 1.0f, 1.0f);
+        gl.glTexCoord2f(1.0f, 0.0f); 
         gl.glVertex3f(-1.0f, 1.0f, 1.0f);
+        //gl.glEnd();
+        
+        
+        
 //sciana tylniaa
-        gl.glColor3f(0.8f, 0.0f, 0.0f);
+        //gl.glColor3f(0.8f, 0.0f, 0.0f);
         gl.glNormal3f(0.0f, 0.0f, -1.0f);
+        gl.glTexCoord2f(1.0f, 1.0f);
         gl.glVertex3f(-1.0f, 1.0f, -1.0f);
+        gl.glTexCoord2f(0.0f, 1.0f);
         gl.glVertex3f(1.0f, 1.0f, -1.0f);
+        gl.glTexCoord2f(0.0f, 0.0f);
         gl.glVertex3f(1.0f, -1.0f, -1.0f);
+        gl.glTexCoord2f(1.0f, 0.0f);
         gl.glVertex3f(-1.0f, -1.0f, -1.0f);
 //?ciana lewa
-        gl.glColor3f(0.8f, 0.0f, 0.0f);
+        //gl.glColor3f(0.8f, 0.0f, 0.0f);
         gl.glNormal3f(-1.0f, 0.0f, 0.0f);
+        gl.glTexCoord2f(1.0f, 1.0f);
         gl.glVertex3f(-1.0f, -1.0f, -1.0f);
+        gl.glTexCoord2f(0.0f, 1.0f);
         gl.glVertex3f(-1.0f, -1.0f, 1.0f);
+        gl.glTexCoord2f(0.0f, 0.0f); 
         gl.glVertex3f(-1.0f, 1.0f, 1.0f);
+        gl.glTexCoord2f(1.0f, 0.0f); 
         gl.glVertex3f(-1.0f, 1.0f, -1.0f);
 //?ciana prawa
-        gl.glColor3f(0.8f, 0.0f, 0.0f);
+        //gl.glColor3f(0.8f, 0.0f, 0.0f);
         gl.glNormal3f(1.0f, 0.0f, 0.0f);
+        gl.glTexCoord2f(1.0f, 1.0f);
         gl.glVertex3f(1.0f, 1.0f, -1.0f);
+        gl.glTexCoord2f(0.0f, 1.0f);
         gl.glVertex3f(1.0f, 1.0f, 1.0f);
+        gl.glTexCoord2f(0.0f, 0.0f); 
         gl.glVertex3f(1.0f, -1.0f, 1.0f);
+        gl.glTexCoord2f(1.0f, 0.0f);
         gl.glVertex3f(1.0f, -1.0f, -1.0f);
 //?ciana dolna
-        gl.glColor3f(0.8f, 0.0f, 0.0f);
+        //gl.glColor3f(0.8f, 0.0f, 0.0f);
         gl.glNormal3f(0.0f, -1.0f, 0.0f);
+        gl.glTexCoord2f(1.0f, 1.0f);
         gl.glVertex3f(-1.0f, -1.0f, 1.0f);
+        gl.glTexCoord2f(0.0f, 1.0f);
         gl.glVertex3f(-1.0f, -1.0f, -1.0f);
+        gl.glTexCoord2f(0.0f, 0.0f);
         gl.glVertex3f(1.0f, -1.0f, -1.0f);
+        gl.glTexCoord2f(1.0f, 0.0f);
         gl.glVertex3f(1.0f, -1.0f, 1.0f);
 //sciana gorna
-        gl.glColor3f(0.8f, 0.0f, 0.0f);
+        //gl.glColor3f(0.8f, 0.0f, 0.0f);
         gl.glNormal3f(0.0f, 1.0f, 0.0f);
+        gl.glTexCoord2f(1.0f, 1.0f); 
         gl.glVertex3f(-1.0f, 1.0f, -1.0f);
+        gl.glTexCoord2f(0.0f, 1.0f);
         gl.glVertex3f(-1.0f, 1.0f, 1.0f);
+        gl.glTexCoord2f(0.0f, 0.0f);
         gl.glVertex3f(1.0f, 1.0f, 1.0f);
+        gl.glTexCoord2f(1.0f, 0.0f);
         gl.glVertex3f(1.0f, 1.0f, -1.0f);
         gl.glEnd();
 
