@@ -159,8 +159,8 @@ public class SimpleJOGL implements GLEventListener {
         gl.glShadeModel(GL.GL_SMOOTH); // try setting this to GL_FLAT and see what happens.
 
         try {
-            image1 = ImageIO.read(new File("pokemon.bmp"));
-            image2 = ImageIO.read(new File("android.bmp"));
+            image1 = ImageIO.read(getClass().getResourceAsStream("/pokemon.jpg"));
+            image2 = ImageIO.read(getClass().getResourceAsStream("/android.jpg"));
         } catch (Exception exc) {
             JOptionPane.showMessageDialog(null, exc.toString());
             return;
