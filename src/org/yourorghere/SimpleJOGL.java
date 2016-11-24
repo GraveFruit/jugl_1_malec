@@ -198,7 +198,7 @@ public class SimpleJOGL implements GLEventListener {
         gl.glViewport(0, 0, width, height);
         gl.glMatrixMode(GL.GL_PROJECTION);
         gl.glLoadIdentity();
-        glu.gluPerspective(50.0f, h, 0.1f, 300.0f);
+        glu.gluPerspective(90.0f, h, 0.1f, 300.0f);
         gl.glMatrixMode(GL.GL_MODELVIEW);
         gl.glLoadIdentity();
 
@@ -223,9 +223,9 @@ public class SimpleJOGL implements GLEventListener {
 
         gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
         gl.glLoadIdentity();
-        gl.glTranslatef(iks, -6.0f, zet); //przesuni?cie o 6 jednostek
-        gl.glRotatef(xrot, 1.0f, 0.0f, 0.0f); //rotacja wokó? osi X
-        gl.glRotatef(kat, 0.0f, 1.0f, 0.0f); //rotacja wokó? osi Y
+        //gl.glTranslatef(0.0f, 0.0f, -6.0f); //przesuni?cie o 6 jednostek
+        //gl.glRotatef(xrot, 1.0f, 0.0f, 0.0f); //rotacja wokó? osi X
+        //gl.glRotatef(yrot, 0.0f, 1.0f, 0.0f); //rotacja wokó? osi Y
 
         gl.glFlush();
 
@@ -397,6 +397,8 @@ public class SimpleJOGL implements GLEventListener {
     }
 
     void Rysuj(GL gl, Texture t1, Texture t2, Texture t3) {
+        gl.glRotatef(kat, 0.0f, 1.0f, 0.0f);
+        gl.glTranslatef(iks, 96.0f, 99.0f+zet);
 //szescian
         gl.glColor3f(1.0f, 1.0f, 1.0f);
 //za³adowanie tekstury wczytanej wczeœniej z pliku krajobraz.bmp
@@ -480,7 +482,7 @@ public class SimpleJOGL implements GLEventListener {
     }
     
     public static void przesun(float d){
-        iks+=d*Math.sin(kat*(3.14f/180.0f));
+        iks-=d*Math.sin(kat*(3.14f/180.0f));
         zet+=d*Math.cos(kat*(3.14f/180.0f));
     }
 }
