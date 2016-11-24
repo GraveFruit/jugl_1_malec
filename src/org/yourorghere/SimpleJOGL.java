@@ -32,14 +32,15 @@ public class SimpleJOGL implements GLEventListener {
     public static float ambientLight[] = {0.3f, 0.3f, 0.3f, 1.0f};//swiat³o otaczajšce
     public static float diffuseLight[] = {0.7f, 0.7f, 0.7f, 1.0f};//?wiat³o rozproszone
     public static float specular[] = {1.0f, 1.0f, 1.0f, 1.0f}; //?wiat³o odbite
-    public static float lightPos[] = {-50.0f, 150.0f, 150.0f, 1.0f};//pozycja ?wiat³a
+    public static float lightPos[] = {0.0f, 0.0f, 0.0f, 1.0f};//pozycja ?wiat³a
     public static float lightPos2[] = {-150.0f, -150.0f, 50.0f, 1.0f};//pozycja ?wiat³a
     static Koparka koparka;
     static BufferedImage image1 = null, image2 = null;
     static BufferedImage niebo = null, trawa = null, bok = null;
     static Texture t1 = null, t2 = null;
     static Texture tniebo = null, tbok = null, ttrawa = null;
-    static float iks = 0.0f, zet = 0.0f, kat = 0.0f;
+    static float iks = 0.0f, zet = 0.0f, kat = -180.0f;
+    static float kopiks = 0.0f, kopzet = 0.0f, kopkat = -90.0f;
 
     public static void main(String[] args) {
 
@@ -75,10 +76,10 @@ public class SimpleJOGL implements GLEventListener {
                     przesun(-1.0f);
                 }
                 if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-                    kat += 1.0f;
+                    kat += 2.0f;
                 }
                 if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-                    kat -= 1.0f;
+                    kat -= 2.0f;
                 }
                 if (e.getKeyChar() == 'q') {
                     ambientLight = new float[]{ambientLight[0] - 0.1f, ambientLight[0] - 0.1f, ambientLight[0] - 0.1f, 1};
@@ -104,6 +105,43 @@ public class SimpleJOGL implements GLEventListener {
                 if (e.getKeyChar() == 'm') {
                     lightPos[3] = 1;
                 }
+                if (e.getKeyCode() == KeyEvent.VK_1) {
+                    koparka.ZmienKat1(1.5f);
+                }
+                if (e.getKeyCode() == KeyEvent.VK_2) {
+                    koparka.ZmienKat1(-1.5f);
+                }
+                if (e.getKeyCode() == KeyEvent.VK_3) {
+                    koparka.ZmienKat2(1.5f);
+                }
+                if (e.getKeyCode() == KeyEvent.VK_4) {
+                    koparka.ZmienKat2(-1.5f);
+                }
+                if (e.getKeyCode() == KeyEvent.VK_5) {
+                    koparka.ZmienKat3(1.5f);
+                }
+                if (e.getKeyCode() == KeyEvent.VK_6) {
+                    koparka.ZmienKat3(-1.5f);
+                }
+                if (e.getKeyCode() == KeyEvent.VK_7) {
+                    koparka.ZmienKat4(1.5f);
+                }
+                if (e.getKeyCode() == KeyEvent.VK_8) {
+                    koparka.ZmienKat4(-1.5f);
+                }
+                if(e.getKeyChar() == 'i'){
+                    przesunkop(1.0f);
+                }
+                if(e.getKeyChar() == 'k'){
+                    przesunkop(-1.0f);
+                }
+                if(e.getKeyChar() == 'j'){
+                    kopkat+=2.0f;
+                }
+                if(e.getKeyChar() == 'l'){
+                    kopkat-=2.0f;
+                }
+                
             }
 
             public void keyReleased(KeyEvent e) {
@@ -122,7 +160,7 @@ public class SimpleJOGL implements GLEventListener {
         // Use debug pipeline
         // drawable.setGL(new DebugGL(drawable.getGL()));
 
-        //koparka = new Koparka();
+        koparka = new Koparka();
         GL gl = drawable.getGL();
         System.err.println("INIT GL IS: " + gl.getClass().getName());
 
@@ -229,81 +267,12 @@ public class SimpleJOGL implements GLEventListener {
 
         gl.glFlush();
 
-        Rysuj(gl, tbok, ttrawa, tniebo);
-
-        gl.glBindTexture(GL.GL_TEXTURE_2D, t1.getTextureObject());
-        gl.glBegin(GL.GL_QUADS);
-//?ciana przednia
-        //gl.glColor3f(0.8f, 0.0f, 0.0f);
-        gl.glNormal3f(0.0f, 0.0f, 1.0f);
-        gl.glTexCoord2f(1.0f, 1.0f);
-        gl.glVertex3f(-1.0f, -1.0f, 1.0f);
-        gl.glTexCoord2f(0.0f, 1.0f);
-        gl.glVertex3f(1.0f, -1.0f, 1.0f);
-        gl.glTexCoord2f(0.0f, 0.0f);
-        gl.glVertex3f(1.0f, 1.0f, 1.0f);
-        gl.glTexCoord2f(1.0f, 0.0f);
-        gl.glVertex3f(-1.0f, 1.0f, 1.0f);
-
-//sciana tylniaa
-        //gl.glColor3f(0.8f, 0.0f, 0.0f);
-        gl.glNormal3f(0.0f, 0.0f, -1.0f);
-        gl.glTexCoord2f(1.0f, 1.0f);
-        gl.glVertex3f(-1.0f, 1.0f, -1.0f);
-        gl.glTexCoord2f(0.0f, 1.0f);
-        gl.glVertex3f(1.0f, 1.0f, -1.0f);
-        gl.glTexCoord2f(0.0f, 0.0f);
-        gl.glVertex3f(1.0f, -1.0f, -1.0f);
-        gl.glTexCoord2f(1.0f, 0.0f);
-        gl.glVertex3f(-1.0f, -1.0f, -1.0f);
-//?ciana lewa
-        //gl.glColor3f(0.8f, 0.0f, 0.0f);
-        gl.glNormal3f(-1.0f, 0.0f, 0.0f);
-        gl.glTexCoord2f(1.0f, 1.0f);
-        gl.glVertex3f(-1.0f, -1.0f, -1.0f);
-        gl.glTexCoord2f(0.0f, 1.0f);
-        gl.glVertex3f(-1.0f, -1.0f, 1.0f);
-        gl.glTexCoord2f(0.0f, 0.0f);
-        gl.glVertex3f(-1.0f, 1.0f, 1.0f);
-        gl.glTexCoord2f(1.0f, 0.0f);
-        gl.glVertex3f(-1.0f, 1.0f, -1.0f);
-        gl.glEnd();
-        gl.glBindTexture(GL.GL_TEXTURE_2D, t2.getTextureObject());
-        gl.glBegin(GL.GL_QUADS);
-//?ciana prawa
-        //gl.glColor3f(0.8f, 0.0f, 0.0f);
-        gl.glNormal3f(1.0f, 0.0f, 0.0f);
-        gl.glTexCoord2f(1.0f, 1.0f);
-        gl.glVertex3f(1.0f, 1.0f, -1.0f);
-        gl.glTexCoord2f(0.0f, 1.0f);
-        gl.glVertex3f(1.0f, 1.0f, 1.0f);
-        gl.glTexCoord2f(0.0f, 0.0f);
-        gl.glVertex3f(1.0f, -1.0f, 1.0f);
-        gl.glTexCoord2f(1.0f, 0.0f);
-        gl.glVertex3f(1.0f, -1.0f, -1.0f);
-//?ciana dolna
-        //gl.glColor3f(0.8f, 0.0f, 0.0f);
-        gl.glNormal3f(0.0f, -1.0f, 0.0f);
-        gl.glTexCoord2f(1.0f, 1.0f);
-        gl.glVertex3f(-1.0f, -1.0f, 1.0f);
-        gl.glTexCoord2f(0.0f, 1.0f);
-        gl.glVertex3f(-1.0f, -1.0f, -1.0f);
-        gl.glTexCoord2f(0.0f, 0.0f);
-        gl.glVertex3f(1.0f, -1.0f, -1.0f);
-        gl.glTexCoord2f(1.0f, 0.0f);
-        gl.glVertex3f(1.0f, -1.0f, 1.0f);
-//sciana gorna
-        //gl.glColor3f(0.8f, 0.0f, 0.0f);
-        gl.glNormal3f(0.0f, 1.0f, 0.0f);
-        gl.glTexCoord2f(1.0f, 1.0f);
-        gl.glVertex3f(-1.0f, 1.0f, -1.0f);
-        gl.glTexCoord2f(0.0f, 1.0f);
-        gl.glVertex3f(-1.0f, 1.0f, 1.0f);
-        gl.glTexCoord2f(0.0f, 0.0f);
-        gl.glVertex3f(1.0f, 1.0f, 1.0f);
-        gl.glTexCoord2f(1.0f, 0.0f);
-        gl.glVertex3f(1.0f, 1.0f, -1.0f);
-        gl.glEnd();
+        RysujScene(gl, tbok, ttrawa, tniebo);
+        gl.glTranslatef(kopiks, -94.0f, kopzet);
+        gl.glRotatef(kopkat,0.0f,1.0f,0.0f);
+        
+        gl.glScalef(4.0f, 4.0f, 4.0f);
+        koparka.Rysuj(gl);
 
     }
 
@@ -396,9 +365,9 @@ public class SimpleJOGL implements GLEventListener {
     public void displayChanged(GLAutoDrawable drawable, boolean modeChanged, boolean deviceChanged) {
     }
 
-    void Rysuj(GL gl, Texture t1, Texture t2, Texture t3) {
+    void RysujScene(GL gl, Texture t1, Texture t2, Texture t3) {
         gl.glRotatef(kat, 0.0f, 1.0f, 0.0f);
-        gl.glTranslatef(iks, 96.0f, 99.0f+zet);
+        gl.glTranslatef(iks, 96.0f, 30.0f + zet);
 //szescian
         gl.glColor3f(1.0f, 1.0f, 1.0f);
 //za³adowanie tekstury wczytanej wczeœniej z pliku krajobraz.bmp
@@ -479,10 +448,16 @@ public class SimpleJOGL implements GLEventListener {
         gl.glTexCoord2f(0.0f, 0.0f);
         gl.glVertex3f(100.0f, 100.0f, 100.0f);
         gl.glEnd();
+
     }
-    
-    public static void przesun(float d){
-        iks-=d*Math.sin(kat*(3.14f/180.0f));
-        zet+=d*Math.cos(kat*(3.14f/180.0f));
+
+    public static void przesun(float d) {
+        iks -= d * Math.sin(kat * (3.14f / 180.0f));
+        zet += d * Math.cos(kat * (3.14f / 180.0f));
+    }
+
+    public static void przesunkop(float d) {
+        kopiks -= d * Math.sin(kopkat * (3.14f / 180.0f));
+        kopzet += d * Math.cos(kopkat * (3.14f / 180.0f));
     }
 }
