@@ -39,6 +39,7 @@ public class SimpleJOGL implements GLEventListener {
     static BufferedImage niebo = null, trawa = null, bok = null;
     static Texture t1 = null, t2 = null;
     static Texture tniebo = null, tbok = null, ttrawa = null;
+    static float iks = 0.0f, zet = 0.0f, kat = 0.0f;
 
     public static void main(String[] args) {
 
@@ -68,16 +69,16 @@ public class SimpleJOGL implements GLEventListener {
         frame.addKeyListener(new KeyListener() {
             public void keyPressed(KeyEvent e) {
                 if (e.getKeyCode() == KeyEvent.VK_UP) {
-                    xrot -= 1.0f;
+                    przesun(1.0f);
                 }
                 if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-                    xrot += 1.0f;
+                    przesun(-1.0f);
                 }
                 if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-                    yrot += 1.0f;
+                    kat += 1.0f;
                 }
                 if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-                    yrot -= 1.0f;
+                    kat -= 1.0f;
                 }
                 if (e.getKeyChar() == 'q') {
                     ambientLight = new float[]{ambientLight[0] - 0.1f, ambientLight[0] - 0.1f, ambientLight[0] - 0.1f, 1};
@@ -122,7 +123,6 @@ public class SimpleJOGL implements GLEventListener {
         // drawable.setGL(new DebugGL(drawable.getGL()));
 
         //koparka = new Koparka();
-
         GL gl = drawable.getGL();
         System.err.println("INIT GL IS: " + gl.getClass().getName());
 
@@ -198,7 +198,7 @@ public class SimpleJOGL implements GLEventListener {
         gl.glViewport(0, 0, width, height);
         gl.glMatrixMode(GL.GL_PROJECTION);
         gl.glLoadIdentity();
-        glu.gluPerspective(50.0f, h, 0.1, 300.0);
+        glu.gluPerspective(50.0f, h, 0.1f, 300.0f);
         gl.glMatrixMode(GL.GL_MODELVIEW);
         gl.glLoadIdentity();
 
@@ -223,28 +223,28 @@ public class SimpleJOGL implements GLEventListener {
 
         gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
         gl.glLoadIdentity();
-        gl.glTranslatef(0.0f, 0.0f, -6.0f); //przesuni?cie o 6 jednostek
+        gl.glTranslatef(iks, -6.0f, zet); //przesuni?cie o 6 jednostek
         gl.glRotatef(xrot, 1.0f, 0.0f, 0.0f); //rotacja wokó? osi X
-        gl.glRotatef(yrot, 0.0f, 1.0f, 0.0f); //rotacja wokó? osi Y
+        gl.glRotatef(kat, 0.0f, 1.0f, 0.0f); //rotacja wokó? osi Y
 
         gl.glFlush();
-        
-        Rysuj(gl,tbok, ttrawa, tniebo);
+
+        Rysuj(gl, tbok, ttrawa, tniebo);
 
         gl.glBindTexture(GL.GL_TEXTURE_2D, t1.getTextureObject());
         gl.glBegin(GL.GL_QUADS);
 //?ciana przednia
         //gl.glColor3f(0.8f, 0.0f, 0.0f);
         gl.glNormal3f(0.0f, 0.0f, 1.0f);
-        gl.glTexCoord2f(1.0f, 1.0f); 
+        gl.glTexCoord2f(1.0f, 1.0f);
         gl.glVertex3f(-1.0f, -1.0f, 1.0f);
         gl.glTexCoord2f(0.0f, 1.0f);
         gl.glVertex3f(1.0f, -1.0f, 1.0f);
         gl.glTexCoord2f(0.0f, 0.0f);
         gl.glVertex3f(1.0f, 1.0f, 1.0f);
-        gl.glTexCoord2f(1.0f, 0.0f); 
+        gl.glTexCoord2f(1.0f, 0.0f);
         gl.glVertex3f(-1.0f, 1.0f, 1.0f);
- 
+
 //sciana tylniaa
         //gl.glColor3f(0.8f, 0.0f, 0.0f);
         gl.glNormal3f(0.0f, 0.0f, -1.0f);
@@ -263,9 +263,9 @@ public class SimpleJOGL implements GLEventListener {
         gl.glVertex3f(-1.0f, -1.0f, -1.0f);
         gl.glTexCoord2f(0.0f, 1.0f);
         gl.glVertex3f(-1.0f, -1.0f, 1.0f);
-        gl.glTexCoord2f(0.0f, 0.0f); 
+        gl.glTexCoord2f(0.0f, 0.0f);
         gl.glVertex3f(-1.0f, 1.0f, 1.0f);
-        gl.glTexCoord2f(1.0f, 0.0f); 
+        gl.glTexCoord2f(1.0f, 0.0f);
         gl.glVertex3f(-1.0f, 1.0f, -1.0f);
         gl.glEnd();
         gl.glBindTexture(GL.GL_TEXTURE_2D, t2.getTextureObject());
@@ -277,7 +277,7 @@ public class SimpleJOGL implements GLEventListener {
         gl.glVertex3f(1.0f, 1.0f, -1.0f);
         gl.glTexCoord2f(0.0f, 1.0f);
         gl.glVertex3f(1.0f, 1.0f, 1.0f);
-        gl.glTexCoord2f(0.0f, 0.0f); 
+        gl.glTexCoord2f(0.0f, 0.0f);
         gl.glVertex3f(1.0f, -1.0f, 1.0f);
         gl.glTexCoord2f(1.0f, 0.0f);
         gl.glVertex3f(1.0f, -1.0f, -1.0f);
@@ -295,7 +295,7 @@ public class SimpleJOGL implements GLEventListener {
 //sciana gorna
         //gl.glColor3f(0.8f, 0.0f, 0.0f);
         gl.glNormal3f(0.0f, 1.0f, 0.0f);
-        gl.glTexCoord2f(1.0f, 1.0f); 
+        gl.glTexCoord2f(1.0f, 1.0f);
         gl.glVertex3f(-1.0f, 1.0f, -1.0f);
         gl.glTexCoord2f(0.0f, 1.0f);
         gl.glVertex3f(-1.0f, 1.0f, 1.0f);
@@ -396,8 +396,7 @@ public class SimpleJOGL implements GLEventListener {
     public void displayChanged(GLAutoDrawable drawable, boolean modeChanged, boolean deviceChanged) {
     }
 
-
-void Rysuj(GL gl, Texture t1, Texture t2, Texture t3) {
+    void Rysuj(GL gl, Texture t1, Texture t2, Texture t3) {
 //szescian
         gl.glColor3f(1.0f, 1.0f, 1.0f);
 //za³adowanie tekstury wczytanej wczeœniej z pliku krajobraz.bmp
@@ -409,15 +408,15 @@ void Rysuj(GL gl, Texture t1, Texture t2, Texture t3) {
         gl.glVertex3f(-100.0f, 100.0f, 100.0f);
         gl.glTexCoord2f(0.0f, 0.0f);
         gl.glVertex3f(100.0f, 100.0f, 100.0f);
-        gl.glTexCoord2f(0.0f, 1.0f);
+        gl.glTexCoord2f(0.0f, 0.85f);
         gl.glVertex3f(100.0f, -100.0f, 100.0f);
-        gl.glTexCoord2f(1.0f, 1.0f);
+        gl.glTexCoord2f(1.0f, 0.85f);
         gl.glVertex3f(-100.0f, -100.0f, 100.0f);
 //œciana tylnia
         gl.glNormal3f(0.0f, 0.0f, 1.0f);
-        gl.glTexCoord2f(1.0f, 1.0f);
+        gl.glTexCoord2f(1.0f, 0.85f);
         gl.glVertex3f(-100.0f, -100.0f, -100.0f);
-        gl.glTexCoord2f(0.0f, 1.0f);
+        gl.glTexCoord2f(0.0f, 0.85f);
         gl.glVertex3f(100.0f, -100.0f, -100.0f);
         gl.glTexCoord2f(0.0f, 0.0f);
         gl.glVertex3f(100.0f, 100.0f, -100.0f);
@@ -429,15 +428,15 @@ void Rysuj(GL gl, Texture t1, Texture t2, Texture t3) {
         gl.glVertex3f(-100.0f, 100.0f, -100.0f);
         gl.glTexCoord2f(1.0f, 0.0f);
         gl.glVertex3f(-100.0f, 100.0f, 100.0f);
-        gl.glTexCoord2f(1.0f, 1.0f);
+        gl.glTexCoord2f(1.0f, 0.85f);
         gl.glVertex3f(-100.0f, -100.0f, 100.0f);
-        gl.glTexCoord2f(0.0f, 1.0f);
+        gl.glTexCoord2f(0.0f, 0.85f);
         gl.glVertex3f(-100.0f, -100.0f, -100.0f);
 //œciana prawa
         gl.glNormal3f(-1.0f, 0.0f, 0.0f);
-        gl.glTexCoord2f(0.0f, 1.0f);
+        gl.glTexCoord2f(0.0f, 0.85f);
         gl.glVertex3f(100.0f, -100.0f, -100.0f);
-        gl.glTexCoord2f(1.0f, 1.0f);
+        gl.glTexCoord2f(1.0f, 0.85f);
         gl.glVertex3f(100.0f, -100.0f, 100.0f);
         gl.glTexCoord2f(1.0f, 0.0f);
         gl.glVertex3f(100.0f, 100.0f, 100.0f);
@@ -453,7 +452,7 @@ void Rysuj(GL gl, Texture t1, Texture t2, Texture t3) {
         gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_WRAP_T, GL.GL_REPEAT);
         gl.glBegin(GL.GL_QUADS);
         gl.glNormal3f(0.0f, 1.0f, 0.0f);
- //koordynaty ustawienia 16 x 16 kwadratów powielonej tekstury na œcianie dolnej
+        //koordynaty ustawienia 16 x 16 kwadratów powielonej tekstury na œcianie dolnej
         gl.glTexCoord2f(0.0f, 0.0f);
         gl.glVertex3f(100.0f, -100.0f, 100.0f);
         gl.glTexCoord2f(0.0f, 16.0f);
@@ -464,7 +463,7 @@ void Rysuj(GL gl, Texture t1, Texture t2, Texture t3) {
         gl.glVertex3f(-100.0f, -100.0f, 100.0f);
         gl.glEnd();
 
- //œciana gorna
+        //œciana gorna
 //za³adowanie tekstury wczytanej wczeœniej z pliku trawa.bmp
         gl.glBindTexture(GL.GL_TEXTURE_2D, t3.getTextureObject());
         gl.glBegin(GL.GL_QUADS);
@@ -478,5 +477,10 @@ void Rysuj(GL gl, Texture t1, Texture t2, Texture t3) {
         gl.glTexCoord2f(0.0f, 0.0f);
         gl.glVertex3f(100.0f, 100.0f, 100.0f);
         gl.glEnd();
+    }
+    
+    public static void przesun(float d){
+        iks+=d*Math.sin(kat*(3.14f/180.0f));
+        zet+=d*Math.cos(kat*(3.14f/180.0f));
     }
 }
